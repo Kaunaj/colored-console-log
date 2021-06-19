@@ -11,15 +11,55 @@ class Logger {
     Object.freeze(this.LEVELS);
   }
 
+  getCallerFile() {
+    let originalFunc = Error.prepareStackTrace;
+
+    let callerfile;
+    let line;
+    let column;
+    try {
+      let err = new Error();
+      let currentfile;
+
+      Error.prepareStackTrace = function (err, stack) {
+        return stack;
+      };
+
+      let trace = err.stack;
+      currentfile = trace.shift().getFileName();
+      // console.log({ currentfile });
+
+      while (trace.length) {
+        const _temp = trace.shift();
+        callerfile = _temp.getFileName();
+        // console.log({ callerfile });
+
+        if (currentfile !== callerfile) {
+          line = _temp.getLineNumber();
+          column = _temp.getColumnNumber();
+          break;
+        }
+      }
+    } catch (e) {
+      console.log("Could not find caller file", "\nReason:", e);
+    }
+
+    Error.prepareStackTrace = originalFunc;
+
+    // console.log("final callerfile", { callerfile, line });
+    return { callerfile, line, column };
+  }
+
   print(msg, level = "") {
     try {
       // this.info(typeof msg);
+      const caller = this.getCallerFile();
       if (typeof msg === "object") {
         msg = JSON.stringify(msg, null, 2);
       }
       const color = level ? this.LEVELS[level] : "";
       const timestamp = new Date();
-      const formattedMsg = `${level} | ${timestamp} | ${msg}`;
+      const formattedMsg = `${level} | ${timestamp} | ${caller.callerfile} at line ${caller.line} | ${msg}`;
       console.log(color, formattedMsg, this.RESET);
     } catch (e) {
       console.log("Could not log", level, "message:", msg, "\nReason:", e);
