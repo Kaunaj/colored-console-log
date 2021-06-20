@@ -1,4 +1,5 @@
 const logger = require("./logger");
+const helper = require("./service/helper");
 
 let waitInSeconds = (time) => {
   return new Promise((resolve, reject) => {
@@ -38,4 +39,6 @@ let waitInSeconds = (time) => {
     "Each message will be printed in a new line",
     ["Objects will be stringified before printing"]
   );
+  await waitInSeconds(2);
+  helper.run();
 })();
