@@ -37,7 +37,7 @@ let waitInSeconds = (time) => {
   logger.log(
     "If there are multiple comma separated messages",
     "Each message will be printed in a new line",
-    ["Objects will be stringified before printing"]
+    ["Objects", "will", "be", "stringified", "before", "printing"]
   );
   await waitInSeconds(2);
   helper.run();
