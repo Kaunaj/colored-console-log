@@ -15,17 +15,19 @@ let waitInSeconds = (time) => {
 };
 
 (async () => {
-  logger.log("This is a normal message");
+  console.log("Message printed using console.log() function");
   await waitInSeconds(2);
-  logger.success("This is a success message");
+  logger.log("This is a normal message printed using log() method");
   await waitInSeconds(2);
-  logger.info("This is an info/debug message");
+  logger.success("This is a success message printed using success() method");
+  await waitInSeconds(2);
+  logger.info("This is an info/debug message printed using info() method");
   await waitInSeconds(2);
   logger.log("This is another normal message");
   await waitInSeconds(2);
-  logger.warn("This is a warning message");
+  logger.warn("This is a warning message printed using warn() method");
   await waitInSeconds(2);
-  logger.error("This is an error message");
+  logger.error("This is an error message printed using error() method");
   await waitInSeconds(2);
   logger.success({
     status: 200,
