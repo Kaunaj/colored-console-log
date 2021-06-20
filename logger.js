@@ -1,5 +1,10 @@
+/** Class for implementing console.log functionality */
 class Logger {
+  /**
+   * Sets properties RESET and LEVELS
+   */
   constructor() {
+    // Color codes reference: https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color
     this.RESET = "\x1b[0m"; // reset previously used color
     this.LEVELS = {
       "normal": "",
@@ -11,6 +16,13 @@ class Logger {
     Object.freeze(this.LEVELS);
   }
 
+  /**
+   * Calculates space padding needed for 'str'
+   * based on maximum length string in 'arr'
+   * @param {String} str - the input string
+   * @param {Array} arr - list which contains max length string
+   * @returns {String} - padding of required length
+   */
   calculatePadding(str, arr) {
     try {
       const maxLengthStr = arr.reduce((a, b) => (a.length > b.length ? a : b));
@@ -30,6 +42,10 @@ class Logger {
     }
   }
 
+  /**
+   * Creates a stack trace and returns the caller file details
+   * @returns {Object} - the caller file name, line and column
+   */
   getCallerFile() {
     let originalFunc = Error.prepareStackTrace;
 
@@ -69,6 +85,11 @@ class Logger {
     return { callerfile, line, column };
   }
 
+  /**
+   * Prints a message formatted according to given level
+   * @param {String} msg - the message to be printed
+   * @param {String} level - priority level of the message
+   */
   print(msg, level = "") {
     try {
       // this.info(typeof msg);
@@ -87,30 +108,50 @@ class Logger {
     }
   }
 
+  /**
+   * Prints out normal messages in order
+   * @param  {...any} msgs - the messages to be printed
+   */
   log(...msgs) {
     for (let msg of msgs) {
       this.print(msg, "normal");
     }
   }
 
+  /**
+   * Prints out success messages in order
+   * @param  {...any} msgs - the messages to be printed
+   */
   success(...msgs) {
     for (let msg of msgs) {
       this.print(msg, "success");
     }
   }
 
+  /**
+   * Prints out info messages in order
+   * @param  {...any} msgs - the messages to be printed
+   */
   info(...msgs) {
     for (let msg of msgs) {
       this.print(msg, "info");
     }
   }
 
+  /**
+   * Prints out warn messages in order
+   * @param  {...any} msgs - the messages to be printed
+   */
   warn(...msgs) {
     for (let msg of msgs) {
       this.print(msg, "warn");
     }
   }
 
+  /**
+   * Prints out error messages in order
+   * @param  {...any} msgs - the messages to be printed
+   */
   error(...msgs) {
     for (let msg of msgs) {
       this.print(msg, "error");
