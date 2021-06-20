@@ -2,7 +2,7 @@ const logger = require("./logger");
 const helper = require("./service/helper");
 
 /**
- * Waits for T seconds
+ * Waits for some number of seconds
  * @param {Number} time - the time to wait in seconds
  */
 let waitInSeconds = (time) => {
