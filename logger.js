@@ -11,13 +11,23 @@ class Logger {
     Object.freeze(this.LEVELS);
   }
 
-  calculatePadding(level) {
-    const maxLengthLevel = Object.keys(this.LEVELS).reduce((a, b) =>
-      a.length > b.length ? a : b
-    );
-    return maxLengthLevel.length - level.length > 0
-      ? " ".repeat(maxLengthLevel.length - level.length)
-      : "";
+  calculatePadding(str, arr) {
+    try {
+      const maxLengthStr = arr.reduce((a, b) => (a.length > b.length ? a : b));
+      return maxLengthStr.length - str.length > 0
+        ? " ".repeat(maxLengthStr.length - str.length)
+        : "";
+    } catch (e) {
+      console.log(
+        "Could not calculate padding for",
+        str,
+        "in",
+        JSON.stringify(arr),
+        "\nReason:",
+        e
+      );
+      return "";
+    }
   }
 
   getCallerFile() {
@@ -68,7 +78,7 @@ class Logger {
       }
       const color = level ? this.LEVELS[level] : "";
       const timestamp = new Date();
-      const padding = this.calculatePadding(level);
+      const padding = this.calculatePadding(level, Object.keys(this.LEVELS));
       level += padding;
       const formattedMsg = `${level} | ${timestamp} | ${caller.callerfile} at line ${caller.line} | ${msg}`;
       console.log(color, formattedMsg, this.RESET);
