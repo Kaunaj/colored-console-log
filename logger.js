@@ -11,6 +11,15 @@ class Logger {
     Object.freeze(this.LEVELS);
   }
 
+  calculatePadding(level) {
+    const maxLengthLevel = Object.keys(this.LEVELS).reduce((a, b) =>
+      a.length > b.length ? a : b
+    );
+    return maxLengthLevel.length - level.length > 0
+      ? " ".repeat(maxLengthLevel.length - level.length)
+      : "";
+  }
+
   getCallerFile() {
     let originalFunc = Error.prepareStackTrace;
 
@@ -59,6 +68,8 @@ class Logger {
       }
       const color = level ? this.LEVELS[level] : "";
       const timestamp = new Date();
+      const padding = this.calculatePadding(level);
+      level += padding;
       const formattedMsg = `${level} | ${timestamp} | ${caller.callerfile} at line ${caller.line} | ${msg}`;
       console.log(color, formattedMsg, this.RESET);
     } catch (e) {
